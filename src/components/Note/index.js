@@ -139,11 +139,6 @@ class Note extends Component {
     )
   }
 
-  stateButtonText = () => {
-    const { note } = this.props
-    return note.state === 'finished' ? 'Start Again' : 'Finish'
-  }
-
   render() {
     if (!this.props.note) return null
     return <article className="note">{this.noteContentByFlag()}</article>

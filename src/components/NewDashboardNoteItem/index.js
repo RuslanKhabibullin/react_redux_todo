@@ -3,10 +3,18 @@ import './NewDashboardNoteItem.css'
 import { createNote } from '../../actions/noteActions'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
+import { inputInvalidate } from "../../helpers"
 
 class NewDashboardNoteItem extends Component {
   static propTypes = {
     createNote: propTypes.func.isRequired
+  }
+
+  static formErrorConfig = {
+    title: [{
+      message: "Should have more than 3 symbols",
+      logic: (value) => value && value.length > 3,
+    }]
   }
 
   state = {
@@ -15,14 +23,22 @@ class NewDashboardNoteItem extends Component {
 
   noteChangeHandler = (ev) => {
     ev.preventDefault()
-    this.setState({ title: ev.target.value })
+    const value = ev.target.value
+    this.setState({ title: value })
   }
 
   noteCreationClickHandler = (ev) => {
     ev.preventDefault()
     const { title } = this.state
-    this.props.createNote({ title })
-    this.setState({ title: "" })
+    if (this.titleValid()) {
+      this.props.createNote({ title })
+      this.setState({ title: "" })
+    }
+  }
+
+  titleValid = () => {
+    const inputErrors = inputInvalidate('title', this.state.title, NewDashboardNoteItem.formErrorConfig)
+    return inputErrors.title.length === 0
   }
 
   render() {
