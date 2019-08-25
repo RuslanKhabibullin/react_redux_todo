@@ -1,0 +1,26 @@
+.dashboard {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(130, 190, 183);
+  background-size: cover;
+}
+
+.notes__wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  padding: 50px;
+}
+
+.notes {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media(max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+}

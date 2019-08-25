@@ -1,0 +1,31 @@
+.new-note {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 auto 40px;
+  padding: 0;
+}
+
+.new-note__input {
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 16px;
+  line-height: 24px;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  opacity: none;
+  background-color: rgba(0, 0, 0, .2);
+  border-radius: 2px;
+}
+
+.new-note__button {
+  width: 100px;
+  margin: 10px 0 0;
+  background-color: #fff;
+}
+
+.new-note__button:hover {
+  background-color: rgba(0, 0, 0, .2)
+}

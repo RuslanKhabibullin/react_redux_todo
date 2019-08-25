@@ -1,0 +1,16 @@
+.notes__item {
+  box-sizing: border-box;
+  margin: 0 0 5px;
+}
+
+.notes__item button {
+  width: 100%;
+  padding: 15px 20px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  text-align: left;
+  background-color: white;
+  cursor: pointer;
+}
