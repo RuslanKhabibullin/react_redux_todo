@@ -14,3 +14,7 @@
   background-color: white;
   cursor: pointer;
 }
+
+.notes__item--active button {
+  background-color: #e1f2fe;
+}

@@ -18,21 +18,25 @@ class Dashboard extends Component {
 
   openNote = (noteId) => this.setState({ openedNoteId: noteId })
   closeNote = () => this.setState({ openedNoteId: undefined })
-
-  render() {
-    const todoList = this.props.todos.map(({ id, title }) => {
+  todoList = () => {
+    const { openedNoteId } = this.state
+    return this.props.todos.map(({ id, title }) => {
       return <DashboardNoteItem
-        key={id} id={id} title={title} toggleOpen={this.openNote}
+        key={id} id={id} title={title} toggleOpen={this.openNote} isActive={id === openedNoteId}
       />
     })
+  }
+
+  render() {
+    const { openedNoteId } = this.state
 
     return (
       <section className="dashboard">
         <div className="notes__wrapper">
           <NewDashboardNoteItem />
-          <ul className="notes">{todoList}</ul>
+          <ul className="notes">{this.todoList()}</ul>
         </div>
-        <Note openedNoteId={this.state.openedNoteId} closeNote={this.closeNote} />
+        <Note openedNoteId={openedNoteId} closeNote={this.closeNote} />
       </section>
     )
   }

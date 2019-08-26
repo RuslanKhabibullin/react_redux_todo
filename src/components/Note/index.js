@@ -7,6 +7,7 @@ import { updateNote } from "../../actions/noteActions"
 import Title from './Title'
 import Description from './Description'
 import StateButton from './StateButton'
+import { titleValidations } from '../../validations'
 
 class Note extends Component {
   static propTypes = {
@@ -22,10 +23,8 @@ class Note extends Component {
   }
 
   static formErrorConfig = {
-    title: [{
-      message: "Should have more than 3 symbols",
-      logic: (value) => value && value.length > 3,
-    }]
+    title: titleValidations,
+    description: []
   }
 
   state = {

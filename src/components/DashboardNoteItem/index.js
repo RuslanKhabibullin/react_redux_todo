@@ -1,27 +1,29 @@
-import React, { Component } from "react"
+import React from "react"
 import propTypes from "prop-types"
 import "./DashboardNoteItem.css"
 
-class DashboardNoteItem extends Component {
-  static propTypes = {
-    id: propTypes.string.isRequired,
-    title: propTypes.string.isRequired,
-    toggleOpen: propTypes.func.isRequired
-  }
-
-  clickHandle = (ev) => {
+function dashboardNoteItemClickHandle(props) {
+  return (ev) => {
     ev.preventDefault()
-    const { toggleOpen, id } = this.props
+    const { toggleOpen, id } = props
     toggleOpen(id)
   }
+}
 
-  render() {
-    return (
-      <li className="notes__item">
-        <button onClick={this.clickHandle}>{this.props.title}</button>
-      </li>
-    )
-  }
+function DashboardNoteItem(props) {
+  const activeClass = props.isActive ? "notes__item--active" : ""
+  return (
+    <li className={`notes__item ${activeClass}`}>
+      <button onClick={dashboardNoteItemClickHandle(props)}>{props.title}</button>
+    </li>
+  )
+}
+
+DashboardNoteItem.propTypes = {
+  id: propTypes.string.isRequired,
+  title: propTypes.string.isRequired,
+  toggleOpen: propTypes.func.isRequired,
+  isActive: propTypes.bool.isRequired
 }
 
 export default DashboardNoteItem;
