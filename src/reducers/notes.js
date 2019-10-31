@@ -23,7 +23,7 @@ const NoteRecord = new Record({
   id: undefined,
   title: "",
   description: undefined,
-  state: "new"
+  finished: false
 })
 
 const ReducerState = new Record({
@@ -42,9 +42,9 @@ export default (state = defaultState, action) => {
       return state
         .setIn(["entities", payload.id, "title"], payload.title)
         .setIn(["entities", payload.id, "description"], payload.description)
-        .setIn(["entities", payload.id, "state"], payload.state)
+        .setIn(["entities", payload.id, "finished"], payload.finished)
     case CREATE_NOTE:
-      const noteObject = { ...payload, state: "new" }
+      const noteObject = { ...payload, finished: false }
       appendToLocalTodos(noteObject)
       
       return state

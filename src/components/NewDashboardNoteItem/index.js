@@ -22,11 +22,12 @@ class NewDashboardNoteItem extends Component {
   }
 
   noteCreationClickHandler = (ev) => {
-    ev.preventDefault()
-    const { title } = this.state
-    if (this.titleValid()) {
-      this.props.createNote({ title })
-      this.setState({ title: "" })
+    if (ev.key === 'Enter') {
+      const { title } = this.state
+      if (this.titleValid()) {
+        this.props.createNote({ title })
+        this.setState({ title: "" })
+      }
     }
   }
 
@@ -45,9 +46,9 @@ class NewDashboardNoteItem extends Component {
           className="new-note__input"
           placeholder="Add note"
           value={title}
-          onChange={this.noteChangeHandler}>
+          onChange={this.noteChangeHandler}
+          onKeyPress={this.noteCreationClickHandler}>
         </input>
-        <button className="button new-note__button" onClick={this.noteCreationClickHandler}>Save</button>
       </div>
     )
   }

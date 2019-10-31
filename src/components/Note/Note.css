@@ -1,9 +1,22 @@
 .note {
   width: 25%;
   box-sizing: border-box;
-  padding: 50px 15px;
+  padding: 0;
   background-color: #fafafa;
   position: relative;
+}
+
+.note__header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 20px 15px;
+  background-color: #fff;
+  border-bottom: 1px solid #828282;
+}
+
+.note__content {
+  padding: 20px 15px 50px;
 }
 
 .note__title {
@@ -12,7 +25,8 @@
   font-size: 16px;
   line-height: 24px;
   font-weight: bold;
-  min-height: 50px;
+  border: none;
+  width: 80%;
 }
 
 .note__description {
@@ -21,36 +35,26 @@
   font-size: 15px;
   line-height: 24px;
   font-weight: normal;
-  min-height: 80px;
+  border: none;
+  border-bottom: 1px solid #828282;
+  width: 100%;
 }
 
 textarea.note__title,
 textarea.note__description {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
-  padding: 5px;
   cursor: text;
   resize: none;
-  width: 100%;
-  border: 1px solid #0079bf;
-  border-radius: 2px;
-}
-
-.note__state {
-  margin: 10px 0;
-}
-
-.note__state b {
-  margin: 0 15px 0 0;
+  background-color: transparent;
+  overflow: hidden;
 }
 
 .note__error-message {
   display: block;
   margin: 10px 0;
   padding: 5px;
-  color: #fff;
-  border-radius: 2px;
-  background-color: red;
+  color: red;
 }
 
 .note__buttons {

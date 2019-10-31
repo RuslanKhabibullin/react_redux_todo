@@ -1,12 +1,9 @@
-import React, { Component, Fragment } from "react"
+import React, { Component } from "react"
 import propTypes from "prop-types"
 import "./Note.css"
 import { connect } from "react-redux"
 import { isUndefined, inputInvalidate } from "../../helpers"
 import { updateNote } from "../../actions/noteActions"
-import Title from './Title'
-import Description from './Description'
-import StateButton from './StateButton'
 import { titleValidations } from '../../validations'
 
 class Note extends Component {
@@ -15,7 +12,7 @@ class Note extends Component {
       id: propTypes.string,
       title: propTypes.string,
       description: propTypes.string,
-      state: propTypes.oneOf(["new", "finished"])
+      finished: propTypes.bool
     }),
     closeNote: propTypes.func.isRequired,
     updateNote: propTypes.func.isRequired,
@@ -28,7 +25,6 @@ class Note extends Component {
   }
 
   state = {
-    editView: false,
     title: undefined,
     description: undefined,
     formErrors: {}
@@ -43,7 +39,8 @@ class Note extends Component {
     if (note && note.title && isUndefined(title)){
       return {
         title: note.title,
-        description: note.description
+        description: note.description,
+        finished: note.finished
       }
     } else {
       return null
@@ -74,17 +71,16 @@ class Note extends Component {
     const { updateNote, note} = this.props
     const { title, description } = this.state
     const payload = {
-      id: note.id, state: note.state, title, description
+      id: note.id, finished: note.finished, title, description
     }
     if (this.formValid()) updateNote(payload)
   }
 
   stateToggleClickHandler = (ev) => {
-    ev.preventDefault()
     const { note, updateNote } = this.props
     const { title, description } = this.state
     const payload = {
-      id: note.id, title, description, state: note.state === "new" ? "finished" : "new"
+      id: note.id, title, description, finished: ev.target.checked
     }
     if (this.formValid()) updateNote(payload)
   }
@@ -114,33 +110,44 @@ class Note extends Component {
     return <span className="note__error-message">{formErrors[attributeName][0]}</span>
   }
 
-  // Show text tags or textareas by editable flag
-  noteContentByFlag = () => {
-    const { state } = this.props.note
-
-    return (
-      <Fragment>
-        <Title
-          title={this.state.title}
-          changeTitleHandler={this.onInputChange("title")}
-          currentInputErrors={this.currentInputErrors("title")} />
-        <Description
-          description={this.state.description}
-          changeDescriptionHandler={this.onInputChange("description")}
-          currentInputErrors={this.currentInputErrors("description")} />
-        <div className="note__state"><b>State:</b>{state || "new"}</div>
-        <div className="note__buttons">
-          <button onClick={this.saveClickHandler} className="button">save</button>
-          <StateButton clickHandler={this.stateToggleClickHandler} state={state} />
-          <button onClick={this.closeClickHandler} className="button">close</button>
-        </div>
-      </Fragment>
-    )
-  }
-
   render() {
     if (!this.props.note) return null
-    return <article className="note">{this.noteContentByFlag()}</article>
+    
+    const { finished } = this.props.note
+    return (
+      <article className="note">
+        <div className="note__header">
+          <label className="custom-checkbox">
+            <input
+              type="checkbox"
+              name="finished"
+              checked={finished}
+              onChange={this.stateToggleClickHandler}>
+            </input>
+            <span className="checkbox-indicator"></span>
+          </label>
+          <textarea
+            value={this.state.title}
+            onChange={this.onInputChange("title")}
+            className="note__title"
+            placeholder="Title" />
+          { this.currentInputErrors("title") }
+        </div>
+        <div className="note__content">
+          <textarea
+            value={this.state.description}
+            onChange={this.onInputChange("description")}
+            className="note__description"
+            placeholder="Description"
+            rows="1" />
+          { this.currentInputErrors("description") }
+          <div className="note__buttons">
+            <button onClick={this.saveClickHandler} className="button">save</button>
+            <button onClick={this.closeClickHandler} className="button">close</button>
+          </div>
+        </div>
+      </article>
+    )
   }
 }
 

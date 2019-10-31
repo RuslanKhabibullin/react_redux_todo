@@ -19,13 +19,3 @@
   background-color: rgba(0, 0, 0, .2);
   border-radius: 2px;
 }
-
-.new-note__button {
-  width: 100px;
-  margin: 10px 0 0;
-  background-color: #fff;
-}
-
-.new-note__button:hover {
-  background-color: rgba(0, 0, 0, .2)
-}
