@@ -6,10 +6,12 @@ import DashboardNoteItem from "../DashboardNoteItem"
 import NewDashboardNoteItem from "../NewDashboardNoteItem"
 import "./Dashboard.css"
 import { mapToArray } from "../../helpers"
+import { Redirect } from 'react-router-dom'
 
 class Dashboard extends Component {
   static propTypes = {
-    notes: PropTypes.array
+    notes: PropTypes.array,
+    signedIn: PropTypes.bool.isRequired
   }
 
   state = {
@@ -39,6 +41,9 @@ class Dashboard extends Component {
 
   render() {
     const { openedNoteId } = this.state
+    const { signedIn } = this.props
+
+    if (!signedIn) return <Redirect to="/login" />
 
     return (
       <section className="dashboard">
@@ -56,5 +61,6 @@ class Dashboard extends Component {
 }
 
 export default connect(state => ({
+  signedIn: state.user.authentication.loaded,
   todos: mapToArray(state.notes.entities)
 }))(Dashboard)
