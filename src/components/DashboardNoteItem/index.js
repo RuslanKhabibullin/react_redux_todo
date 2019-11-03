@@ -12,8 +12,9 @@ function dashboardNoteItemClickHandle(props) {
 
 function DashboardNoteItem(props) {
   const activeClass = props.isActive ? "notes__item--active" : ""
+  const crossedClass = props.isFinished ? "notes__item--crossed" : ""
   return (
-    <li className={`notes__item ${activeClass}`}>
+    <li className={`notes__item ${activeClass} ${crossedClass}`}>
       <button onClick={dashboardNoteItemClickHandle(props)}>{props.title}</button>
     </li>
   )

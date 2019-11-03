@@ -18,13 +18,23 @@ class Dashboard extends Component {
 
   openNote = (noteId) => this.setState({ openedNoteId: noteId })
   closeNote = () => this.setState({ openedNoteId: undefined })
-  todoList = () => {
+  todoList = (isFinished = false) => {
     const { openedNoteId } = this.state
-    return this.props.todos.map(({ id, title }) => {
-      return <DashboardNoteItem
-        key={id} id={id} title={title} toggleOpen={this.openNote} isActive={id === openedNoteId}
-      />
-    })
+    const todos = this.props.todos.filter(({ finished }) => finished === isFinished)
+    if (todos.length === 0) {
+      return <p className="dashboard__text">No todos here :(</p>
+    } else {
+      return todos.map(({ id, title, finished }) => {
+        return <DashboardNoteItem
+          key={id}
+          id={id}
+          title={title}
+          isFinished={finished}
+          toggleOpen={this.openNote}
+          isActive={id === openedNoteId}
+        />
+      })
+    }
   }
 
   render() {
@@ -34,7 +44,10 @@ class Dashboard extends Component {
       <section className="dashboard">
         <div className="notes__wrapper">
           <NewDashboardNoteItem />
+          <h2 className="dashboard__subtitle">active todos</h2>
           <ul className="notes">{this.todoList()}</ul>
+          <h2 className="dashboard__subtitle">finished todos</h2>
+          <ul className="notes">{this.todoList(true)}</ul>
         </div>
         <Note openedNoteId={openedNoteId} closeNote={this.closeNote} />
       </section>

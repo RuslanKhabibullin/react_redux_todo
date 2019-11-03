@@ -5,6 +5,27 @@
   background-size: cover;
 }
 
+.dashboard__subtitle {
+  font-weight: normal;
+  font-size: 14px;
+  padding: 10px;
+  display: inline-block;
+  background-color: transparent;
+  background-color: rgba(0, 0, 0, .2);
+  border-radius: 2px;
+  opacity: .8;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.dashboard__text {
+  color: #fff;
+  font-size: 18px;
+  opacity: .8;
+  font-weight: normal;
+  padding: 0 5px;
+}
+
 .notes__wrapper {
   box-sizing: border-box;
   width: 100%;
@@ -22,5 +43,9 @@
 @media(max-width: 768px) {
   .dashboard {
     flex-direction: column;
+  }
+
+  .notes__wrapper {
+    padding: 20px;
   }
 }

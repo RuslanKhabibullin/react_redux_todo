@@ -73,7 +73,11 @@ class Note extends Component {
     const payload = {
       id: note.id, finished: note.finished, title, description
     }
-    if (this.formValid()) updateNote(payload)
+    if (this.formValid()) {
+      updateNote(payload)
+      this.setState(this.baseState)
+      this.props.closeNote()
+    }
   }
 
   stateToggleClickHandler = (ev) => {

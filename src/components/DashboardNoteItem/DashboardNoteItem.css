@@ -18,3 +18,7 @@
 .notes__item--active button {
   background-color: #e1f2fe;
 }
+
+.notes__item--crossed button {
+  text-decoration: line-through;
+}
