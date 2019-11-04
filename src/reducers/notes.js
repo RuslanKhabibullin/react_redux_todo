@@ -22,7 +22,7 @@ function updateLocalTodo(note) {
 const NoteRecord = new Record({
   id: undefined,
   title: "",
-  description: undefined,
+  description: "",
   finished: false
 })
 

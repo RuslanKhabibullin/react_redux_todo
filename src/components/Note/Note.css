@@ -50,13 +50,6 @@ textarea.note__description {
   overflow: hidden;
 }
 
-.note__error-message {
-  display: block;
-  margin: 10px 0;
-  padding: 5px;
-  color: red;
-}
-
 .note__buttons {
   position: absolute;
   bottom: 10px;

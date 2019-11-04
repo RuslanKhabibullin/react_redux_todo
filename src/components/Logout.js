@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Redirect } from "react-router-dom"
 import { connect} from "react-redux"
-import { signOut } from '../../actions/userActions'
+import { signOut } from '../actions/userActions'
 
 function Logout({ signOut }) {
   signOut()

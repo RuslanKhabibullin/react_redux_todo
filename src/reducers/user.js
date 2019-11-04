@@ -4,7 +4,7 @@ import { USER_SIGN_OUT, USER_SIGN_IN } from "../constants"
 const userId = window.localStorage.getItem("userId")
 const UserRecord = new Record({
   id: userId ? userId : undefined,
-  email: undefined,
+  email: "",
   loaded: false,
   loading: false
 })

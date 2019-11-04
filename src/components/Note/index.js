@@ -1,158 +1,85 @@
-import React, { Component } from "react"
+import React from "react"
 import propTypes from "prop-types"
 import "./Note.css"
 import { connect } from "react-redux"
-import { isUndefined, inputInvalidate } from "../../helpers"
 import { updateNote } from "../../actions/noteActions"
 import { titleValidations } from '../../validations'
+import Form from '../Form'
 
-class Note extends Component {
-  static propTypes = {
-    note: propTypes.shape({
-      id: propTypes.string,
-      title: propTypes.string,
-      description: propTypes.string,
-      finished: propTypes.bool
-    }),
-    closeNote: propTypes.func.isRequired,
-    updateNote: propTypes.func.isRequired,
-    openedNoteId: propTypes.string,
-  }
+const closeClickHandler = ({ closeNote }) => (ev) => {
+  ev.preventDefault()
+  closeNote()
+}
 
-  static formErrorConfig = {
-    title: titleValidations,
-    description: []
-  }
+const onSubmit = ({ updateNote, note, closeNote }) => ({ title, description, finished }) => {
+  updateNote({ id: note.id, finished, title, description })
+  closeNote()
+}
 
-  state = {
-    title: undefined,
-    description: undefined,
-    formErrors: {}
-  }
+const updateStateValuesOnPropsChange = (propsValues, stateValues) => (
+  propsValues.id === stateValues.id ? stateValues : propsValues
+)
 
-  constructor(props) {
-    super(props)
-    this.baseState = this.state
-  }
+function Note(props) {
+  const { note } = props
+  if (!note) return null
 
-  static getDerivedStateFromProps({ note }, { title }){
-    if (note && note.title && isUndefined(title)){
-      return {
-        title: note.title,
-        description: note.description,
-        finished: note.finished
-      }
-    } else {
-      return null
-    }
-  }
-
-  // Reset state on note switch
-  componentDidUpdate(prevProps) {
-    if (!prevProps.note || !this.props.note) return
-
-    const prevId = prevProps.note.id
-    const { id } = this.props.note
-
-    if (prevId !== id) {
-      return this.setState(this.baseState)
-    }
-  }
-
-  // Close current note
-  closeClickHandler = (ev) => {
-    ev.preventDefault()
-    this.setState(this.baseState)
-    this.props.closeNote()
-  }
-
-  saveClickHandler = (ev) => {
-    ev.preventDefault()
-    const { updateNote, note} = this.props
-    const { title, description } = this.state
-    const payload = {
-      id: note.id, finished: note.finished, title, description
-    }
-    if (this.formValid()) {
-      updateNote(payload)
-      this.setState(this.baseState)
-      this.props.closeNote()
-    }
-  }
-
-  stateToggleClickHandler = (ev) => {
-    const { note, updateNote } = this.props
-    const { title, description } = this.state
-    const payload = {
-      id: note.id, title, description, finished: ev.target.checked
-    }
-    if (this.formValid()) updateNote(payload)
-  }
-
-  // Textareas handlers
-  onInputChange = (attributeName) => (ev) => {
-    ev.preventDefault()
-    const value = ev.target.value
-    const { formErrors } = this.state
-
-    this.setState({
-      [attributeName]: value,
-      formErrors: { ...formErrors, ...inputInvalidate(attributeName, value, Note.formErrorConfig) }
-    })
-  }
-
-  formValid = () => {
-    const { formErrors } = this.state
-    const invalidAttrubte = Object.entries(formErrors).find(([_name, errors]) => errors.length > 0)
-    return isUndefined(invalidAttrubte)
-  }
-
-  currentInputErrors = (attributeName) => {
-    const { formErrors } = this.state
-    if (!formErrors[attributeName] || formErrors[attributeName].length === 0) return null
-
-    return <span className="note__error-message">{formErrors[attributeName][0]}</span>
-  }
-
-  render() {
-    if (!this.props.note) return null
-    
-    const { finished } = this.props.note
-    return (
-      <article className="note">
-        <div className="note__header">
-          <label className="custom-checkbox">
-            <input
-              type="checkbox"
-              name="finished"
-              checked={finished}
-              onChange={this.stateToggleClickHandler}>
-            </input>
-            <span className="checkbox-indicator"></span>
-          </label>
-          <textarea
-            value={this.state.title}
-            onChange={this.onInputChange("title")}
-            className="note__title"
-            placeholder="Title" />
-          { this.currentInputErrors("title") }
-        </div>
-        <div className="note__content">
-          <textarea
-            value={this.state.description}
-            onChange={this.onInputChange("description")}
-            className="note__description"
-            placeholder="Description"
-            rows="1" />
-          { this.currentInputErrors("description") }
-          <div className="note__buttons">
-            <button onClick={this.saveClickHandler} className="button">save</button>
-            <button onClick={this.closeClickHandler} className="button">close</button>
+  return (
+    <Form
+      initialValues={note.toJS()}
+      validations={ { title: titleValidations } }
+      onSubmit={onSubmit(props)}
+      updateStateValuesOnPropsChange={updateStateValuesOnPropsChange}
+    >
+      {({ onInputChange, handleSubmit, errors, values }) => (
+        <article className="note">
+          <div className="note__header">
+            <label className="custom-checkbox">
+              <input
+                type="checkbox"
+                name="finished"
+                checked={values.finished}
+                onChange={onInputChange}>
+              </input>
+              <span className="checkbox-indicator"></span>
+            </label>
+            <textarea
+              value={values.title}
+              onChange={onInputChange}
+              className="note__title"
+              name="title"
+              placeholder="Title" />
+            { errors.title }
           </div>
-        </div>
-      </article>
-    )
-  }
+          <div className="note__content">
+            <textarea
+              value={values.description}
+              onChange={onInputChange}
+              className="note__description"
+              name="description"
+              placeholder="Description"
+              rows="1" />
+            <div className="note__buttons">
+              <button onClick={handleSubmit} className="button">save</button>
+              <button onClick={closeClickHandler(props)} className="button">close</button>
+            </div>
+          </div>
+        </article>
+      )}
+    </Form>
+  )
+}
+
+Note.propTypes = {
+  note: propTypes.shape({
+    id: propTypes.string,
+    title: propTypes.string,
+    description: propTypes.string,
+    finished: propTypes.bool
+  }),
+  closeNote: propTypes.func.isRequired,
+  updateNote: propTypes.func.isRequired,
+  openedNoteId: propTypes.string,
 }
 
 export default connect((state, ownProps) => ({

@@ -4,8 +4,11 @@ import { connect } from "react-redux"
 import { NavLink } from "react-router-dom" 
 
 function Navigation({ signedIn }) {
-  if (signedIn) return <NavLink to="/logout">Выйти</NavLink>
-  return null
+  if (signedIn) {
+    return <NavLink to="/logout">Выйти</NavLink>
+  } else {
+    return null
+  }
 }
 
 Navigation.propTypes = {
