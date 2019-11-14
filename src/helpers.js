@@ -14,7 +14,7 @@ export function limitString(string, limit = 10) {
   const length = string.length
 
   if (length > limit) {
-    return string.substring(0, limit - 3) + '...'
+    return string.substring(0, limit - 3) + "..."
   } else {
     return string
   }

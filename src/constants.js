@@ -7,6 +7,6 @@ export const START = "_START"
 export const SUCCESS = "_SUCCESS"
 export const FAIL = "_FAIL"
 export const DEFAULT_REQUEST_HEADERS = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
+  Accept: "application/json",
+  "Content-Type": "application/json"
 }

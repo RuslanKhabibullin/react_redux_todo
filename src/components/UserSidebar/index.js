@@ -2,9 +2,9 @@ import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { NavLink } from "react-router-dom"
-import { limitString } from '../../helpers'
+import { limitString } from "../../helpers"
 import "./UserSidebar.css"
-import { ReactComponent as UserIcon } from './user-icon.svg'
+import { ReactComponent as UserIcon } from "./user-icon.svg"
 
 function UserSidebar({ email }) {
   return (
