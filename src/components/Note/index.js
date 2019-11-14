@@ -3,8 +3,8 @@ import propTypes from "prop-types"
 import "./Note.css"
 import { connect } from "react-redux"
 import { updateNote } from "../../actions/noteActions"
-import { titleValidations } from '../../validations'
-import Form from '../Form'
+import { titleValidations } from "../../validations"
+import Form from "../Form"
 
 const closeClickHandler = ({ closeNote }) => (ev) => {
   ev.preventDefault()

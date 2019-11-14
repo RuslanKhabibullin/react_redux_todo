@@ -1,16 +1,16 @@
 import React from "react"
-import './NewDashboardNoteItem.css'
-import { createNote } from '../../actions/noteActions'
-import { connect } from 'react-redux'
-import propTypes from 'prop-types'
-import { titleValidations } from '../../validations'
-import Form from '../Form'
+import "./NewDashboardNoteItem.css"
+import { createNote } from "../../actions/noteActions"
+import { connect } from "react-redux"
+import propTypes from "prop-types"
+import { titleValidations } from "../../validations"
+import Form from "../Form"
 
 const onSubmit = ({ createNote }) => ({ title }, { resetForm }) => {
   createNote({ title })
   resetForm()
 }
-const noteCreationClickHandler = (handleSubmit) => (ev) => ev.key === 'Enter' ? handleSubmit(ev) : null
+const noteCreationClickHandler = (handleSubmit) => (ev) => ev.key === "Enter" ? handleSubmit(ev) : null
 
 function NewDashboardNoteItem(props) {
   return (

@@ -4,9 +4,10 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import DashboardNoteItem from "../DashboardNoteItem"
 import NewDashboardNoteItem from "../NewDashboardNoteItem"
+import UserSidebar from "../UserSidebar"
 import "./Dashboard.css"
 import { mapToArray } from "../../helpers"
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom"
 
 class Dashboard extends Component {
   static propTypes = {
@@ -47,6 +48,7 @@ class Dashboard extends Component {
 
     return (
       <section className="dashboard">
+        <UserSidebar />
         <div className="notes__wrapper">
           <NewDashboardNoteItem />
           <h2 className="dashboard__subtitle">active todos</h2>

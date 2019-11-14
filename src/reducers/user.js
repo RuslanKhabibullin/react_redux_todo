@@ -4,7 +4,7 @@ import { USER_SIGN_OUT, USER_SIGN_IN } from "../constants"
 const userId = window.localStorage.getItem("userId")
 const UserRecord = new Record({
   id: userId ? userId : undefined,
-  email: "",
+  email: userId ? "user@email.com" : "",
   loaded: false,
   loading: false
 })
@@ -13,7 +13,7 @@ const AuthRecord = new Record({
   loaded: userId ? true : false
 })
 const ReducerState = new Record({
-  user: new UserRecord(),
+  record: new UserRecord(),
   authentication: new AuthRecord(),
   error: ""
 })
@@ -26,12 +26,12 @@ export default (state = defaultState, action) => {
       window.localStorage.setItem("userId", 1)
       return state
         .set("authentication", new AuthRecord({ loading: false, loaded: true }))
-        .set("user", new UserRecord({ id: 1, email: payload.email, loaded: true, loading: false }))
+        .set("record", new UserRecord({ id: 1, email: payload.email, loaded: true, loading: false }))
     case USER_SIGN_OUT:
       window.localStorage.removeItem("userId")
       return state
         .set("authentication", new AuthRecord({ loaded: false, loadind: false }))
-        .set("user", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
+        .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
     default:
       return state
   }

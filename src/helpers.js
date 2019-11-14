@@ -9,3 +9,13 @@ export function arrayToMap(array, DataRecord = Map) {
 export function mapToArray(mapObject) {
   return mapObject.valueSeq().toArray()
 }
+
+export function limitString(string, limit = 10) {
+  const length = string.length
+
+  if (length > limit) {
+    return string.substring(0, limit - 3) + '...'
+  } else {
+    return string
+  }
+}
