@@ -1,10 +1,10 @@
 import { Record } from "immutable"
-import { USER_SIGN_OUT, USER_SIGN_IN } from "../constants"
+import { USER_SIGN_OUT, USER_SIGN_IN, USER_SIGN_UP } from "../constants"
 
 const userId = window.localStorage.getItem("userId")
 const UserRecord = new Record({
   id: userId ? userId : undefined,
-  email: userId ? "user@email.com" : "",
+  email: "",
   loaded: false,
   loading: false
 })
@@ -22,6 +22,7 @@ const defaultState = new ReducerState()
 export default (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
+    case USER_SIGN_UP:
     case USER_SIGN_IN:
       window.localStorage.setItem("userId", 1)
       return state

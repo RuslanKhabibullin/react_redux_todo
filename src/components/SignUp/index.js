@@ -1,27 +1,26 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { signIn } from "../../actions/userActions"
+import { signUp } from "../../actions/userActions"
 import { Redirect, NavLink } from "react-router-dom"
 import { emailValidations, passwordValidations } from "../../validations"
 import Form from "../Form"
-import "./Login.css"
-import { ReactComponent as GoogleIcon } from "./google-button.svg"
+import "./SignUp.css"
 
-const onSubmit = ({ signIn }) => ({ email, password }) => signIn(email, password)
+const onSubmit = ({ signUp }) => ({ email, password }) => signUp(email, password)
 
-function Login(props) {
+function SignUp(props) {
   if (props.signedIn) return <Redirect to="/" />
 
   return (
-    <section className="login">
+    <section className="registration">
       <Form
         initialValues={ { email: "", password: "" } }
         validations={ { email: emailValidations, password: passwordValidations } }
         onSubmit={onSubmit(props)}
       >
         {({ onInputChange, handleSubmit, errors, values }) => (
-          <div className="login__form">
+          <div className="registration__form">
             <form onSubmit={handleSubmit}>
               <div className="input_block">
                 <label htmlFor="email">Email</label>
@@ -45,14 +44,8 @@ function Login(props) {
                 />
                 { errors.password }
               </div>
-              <input type="submit" className="input_button" value="Sign in"/>
-              <a href="#" className="google-button">
-                <span className="google-icon">
-                  <GoogleIcon></GoogleIcon>
-                </span>
-                <span className="google-text">Sign in with Google</span>
-              </a>
-              <NavLink to="/signup" className="login__link">Create an account</NavLink>
+              <input type="submit" className="input_button" value="Sign Up"/>
+              <NavLink to="/login" className="registration__link">Login</NavLink>
             </form>
           </div>
         )}
@@ -61,7 +54,7 @@ function Login(props) {
   )
 }
 
-Login.propTypes = {
+SignUp.propTypes = {
   signedIn: PropTypes.bool.isRequired,
   signIn: PropTypes.func.isRequired,
 }
@@ -72,11 +65,11 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signIn: (email, password) => dispatch(signIn({ email, password })),
+    signUp: (email, password) => dispatch(signUp({ email, password })),
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login)
+)(SignUp)
