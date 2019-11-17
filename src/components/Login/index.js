@@ -5,6 +5,7 @@ import { signIn } from "../../actions/userActions"
 import { Redirect, NavLink } from "react-router-dom"
 import { emailValidations, passwordValidations } from "../../validations"
 import Form from "../Form"
+import Loader from "../Loader"
 import "./Login.css"
 
 const onSubmit = ({ signIn }) => ({ email, password }) => signIn(email, password)
@@ -14,6 +15,7 @@ function Login(props) {
 
   return (
     <section className="login">
+      { props.loading && <Loader />}
       <Form
         initialValues={ { email: "", password: "" } }
         validations={ { email: emailValidations, password: passwordValidations } }
@@ -56,11 +58,15 @@ function Login(props) {
 
 Login.propTypes = {
   signedIn: PropTypes.bool.isRequired,
-  signIn: PropTypes.func.isRequired
+  signIn: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = ({ user }) => {
-  return { signedIn: user.authentication.loaded }
+  return {
+    signedIn: user.authentication.loaded,
+    loading: user.authentication.loading
+  }
 }
 
 const mapDispatchToProps = dispatch => {
