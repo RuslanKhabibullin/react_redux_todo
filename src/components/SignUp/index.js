@@ -56,7 +56,7 @@ function SignUp(props) {
 
 SignUp.propTypes = {
   signedIn: PropTypes.bool.isRequired,
-  signIn: PropTypes.func.isRequired,
+  signUp: PropTypes.func.isRequired
 }
 
 const mapStateToProps = ({ user }) => {

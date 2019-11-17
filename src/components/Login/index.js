@@ -6,7 +6,6 @@ import { Redirect, NavLink } from "react-router-dom"
 import { emailValidations, passwordValidations } from "../../validations"
 import Form from "../Form"
 import "./Login.css"
-import { ReactComponent as GoogleIcon } from "./google-button.svg"
 
 const onSubmit = ({ signIn }) => ({ email, password }) => signIn(email, password)
 
@@ -46,12 +45,6 @@ function Login(props) {
                 { errors.password }
               </div>
               <input type="submit" className="input_button" value="Sign in"/>
-              <a href="#" className="google-button">
-                <span className="google-icon">
-                  <GoogleIcon></GoogleIcon>
-                </span>
-                <span className="google-text">Sign in with Google</span>
-              </a>
               <NavLink to="/signup" className="login__link">Create an account</NavLink>
             </form>
           </div>
@@ -63,7 +56,7 @@ function Login(props) {
 
 Login.propTypes = {
   signedIn: PropTypes.bool.isRequired,
-  signIn: PropTypes.func.isRequired,
+  signIn: PropTypes.func.isRequired
 }
 
 const mapStateToProps = ({ user }) => {
@@ -71,9 +64,7 @@ const mapStateToProps = ({ user }) => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    signIn: (email, password) => dispatch(signIn({ email, password })),
-  }
+  return { signIn: (email, password) => dispatch(signIn({ email, password })) }
 }
 
 export default connect(

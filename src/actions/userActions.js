@@ -1,16 +1,64 @@
-import { USER_SIGN_IN, USER_SIGN_OUT, USER_SIGN_UP } from "../constants"
+import {
+  USER_SIGN_IN,
+  USER_SIGN_OUT,
+  USER_SIGN_UP,
+  START,
+  SUCCESS,
+  FAIL,
+  BASE_URL
+} from "../constants"
 
 export function signIn({ email, password }) {
-  return {
-    type: USER_SIGN_IN,
-    payload: { email, password }
+  return dispatch => {
+    dispatch({ type: USER_SIGN_IN + START })
+
+    fetch(`${BASE_URL}/auth/sign_in`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: { email, password } })
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => dispatch({ type: USER_SIGN_IN + SUCCESS, payload: json.data }))
+        } else {
+          switch (response.status) {
+            case 401:
+              return dispatch({ type: USER_SIGN_IN + FAIL, payload: { base: "User not found" }})
+            case 422:
+            default:
+              return response.json().then(json => dispatch({ type: USER_SIGN_IN + FAIL, payload: json.errors }))
+          }
+        }
+      })
+      .catch(error => dispatch({ type: USER_SIGN_IN + FAIL, payload: error }))
   }
 }
 
 export function signUp({ email, password }) {
-  return {
-    type: USER_SIGN_UP,
-    payload: { email, password }
+  return dispatch => {
+    dispatch({ type: USER_SIGN_UP + START })
+
+    fetch(`${BASE_URL}/auth/sign_up`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: { email, password } })
+    })
+      .then(response => {
+        if (response.ok) {
+          response.json().then(json => dispatch({ type: USER_SIGN_UP + SUCCESS, payload: json.data }))
+        } else {
+          response.json().then(json => dispatch({ type: USER_SIGN_UP + FAIL, payload: json.errors }))
+        }
+      })
+      .catch(error => dispatch({ type: USER_SIGN_UP + FAIL, payload: error }))
   }
 }
 

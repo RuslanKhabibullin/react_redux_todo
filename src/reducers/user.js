@@ -1,7 +1,9 @@
 import { Record } from "immutable"
-import { USER_SIGN_OUT, USER_SIGN_IN, USER_SIGN_UP } from "../constants"
+import { USER_SIGN_OUT, USER_SIGN_IN, USER_SIGN_UP, START, SUCCESS, FAIL } from "../constants"
 
 const userId = window.localStorage.getItem("userId")
+const token = window.localStorage.getItem("token")
+
 const UserRecord = new Record({
   id: userId ? userId : undefined,
   email: "",
@@ -9,30 +11,48 @@ const UserRecord = new Record({
   loading: false
 })
 const AuthRecord = new Record({
+  token: token ? token : undefined,
   loading: false,
-  loaded: userId ? true : false
+  loaded: token && userId ? true : false
 })
 const ReducerState = new Record({
   record: new UserRecord(),
   authentication: new AuthRecord(),
-  error: ""
+  error: {}
 })
 const defaultState = new ReducerState()
 
 export default (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
-    case USER_SIGN_UP:
-    case USER_SIGN_IN:
-      window.localStorage.setItem("userId", 1)
+    case USER_SIGN_UP + START:
+    case USER_SIGN_IN + START:
       return state
-        .set("authentication", new AuthRecord({ loading: false, loaded: true }))
-        .set("record", new UserRecord({ id: 1, email: payload.email, loaded: true, loading: false }))
+        .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
+        .set("authentication", new AuthRecord({ token: undefined, loaded: false, loading: true }))
+        .set("error", {})
+    case USER_SIGN_UP + SUCCESS:
+    case USER_SIGN_IN + SUCCESS:
+      const { token, user } = payload
+      window.localStorage.setItem("userId", user.id)
+      window.localStorage.setItem("token", token)
+      return state
+        .set("authentication", new AuthRecord({ token: token, loading: false, loaded: true }))
+        .set("record", new UserRecord({ id: user.id, email: user.email, loaded: true, loading: false }))
+        .set("error", {})
+    case USER_SIGN_UP + FAIL:
+    case USER_SIGN_IN + FAIL:
+      return state
+      .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
+      .set("authentication", new AuthRecord({ token: undefined, loaded: false, loading: false }))
+      .set("error", payload)
     case USER_SIGN_OUT:
       window.localStorage.removeItem("userId")
+      window.localStorage.removeItem("token")
       return state
-        .set("authentication", new AuthRecord({ loaded: false, loadind: false }))
+        .set("authentication", new AuthRecord({ token: undefined, loaded: false, loadind: false }))
         .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
+        .set("error", {})
     default:
       return state
   }

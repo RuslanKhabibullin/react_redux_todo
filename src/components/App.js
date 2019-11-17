@@ -4,10 +4,12 @@ import Dashboard from "./Dashboard"
 import Login from "./Login"
 import Logout from "./Logout"
 import SignUp from "./SignUp"
+import Notification from "./Notification"
 
 function App() {
   return (
     <Router>
+      <Notification />
       <Switch>
         <Route exact path="/" component={Dashboard} />
         <Route path="/login" component={Login} />

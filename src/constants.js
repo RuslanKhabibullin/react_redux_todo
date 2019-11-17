@@ -7,7 +7,4 @@ export const USER_SIGN_OUT = "USER_SIGN_OUT"
 export const START = "_START"
 export const SUCCESS = "_SUCCESS"
 export const FAIL = "_FAIL"
-export const DEFAULT_REQUEST_HEADERS = {
-  Accept: "application/json",
-  "Content-Type": "application/json"
-}
+export const BASE_URL = "https://todos-elixir-api.herokuapp.com/api"

@@ -1,0 +1,43 @@
+.notification {
+  text-align:left;
+  padding: 21px 50px;
+  background-color:#fff;
+  border-radius: 5px;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, .2);
+}
+
+.notification__container {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 99;
+}
+
+.notification__message {
+  margin: 0;
+}
+
+.notification:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  border-top-left-radius:4px;
+  border-bottom-left-radius: 4px;
+}
+
+.notification--green:before {
+  background-color:#2BDE3F;
+}
+
+.notification--red:before {
+  background-color: red;
+}
+
+.notification--yellow:before {
+  background-color: #FFC007;
+}

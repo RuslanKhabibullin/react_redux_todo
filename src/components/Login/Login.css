@@ -60,40 +60,6 @@
   cursor: pointer;
 }
 
-.google-button {
-  display: block;
-  height: 50px;
-  margin: 30px 0;
-  border-width: 0;
-  background: white;
-  color: #737373;
-  border-radius: 5px;
-  white-space: nowrap;
-  box-shadow: 1px 1px 0px 1px rgba(0, 0, 0, .05);
-  padding: 10px;
-  box-sizing: border-box;
-  cursor: pointer;
-  text-align: center;
-}
-
-.google-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 8px 0 8px 8px;
-  width: 18px;
-  height: 18px;
-  box-sizing: border-box;
-}
-
-.google-text {
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0 24px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: 'Roboto',arial,sans-serif;
-}
-
 .login__link {
   display: block;
   color: blue;
