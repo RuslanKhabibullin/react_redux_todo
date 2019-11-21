@@ -1,22 +1,25 @@
-import { Record } from "immutable"
+import { Record, OrderedMap } from "immutable"
 import { arrayToMap } from "../helpers"
-import { UPDATE_NOTE, CREATE_NOTE } from "../constants"
+import {
+  UPDATE_NOTE,
+  CREATE_NOTE,
+  FETCH_NOTES,
+  START,
+  SUCCESS,
+  FAIL
+} from "../constants"
 
-function getLocalTodos() {
-  return JSON.parse(localStorage.getItem("todos")) || []
+const backendTodoToStoreTodo = (backendTodo) => {
+  return {
+    finished: backendTodo.is_finished,
+    id: backendTodo.id,
+    title: backendTodo.title,
+    description: backendTodo.description
+  }
 }
 
-function appendToLocalTodos(note) {
-  const todos = getLocalTodos()
-  todos.push(note)
-  localStorage.setItem("todos", JSON.stringify(todos))
-}
-
-function updateLocalTodo(note) {
-  const todos = getLocalTodos()
-  const updatedIndex = todos.findIndex(obj => obj.id === note.id)
-  todos[updatedIndex] = { ...todos.updatedIndex, ...note }
-  localStorage.setItem("todos", JSON.stringify(todos))
+const renameResponseEntities = (backendNotesResponse) => {
+  return backendNotesResponse.map(element => backendTodoToStoreTodo(element))
 }
 
 const NoteRecord = new Record({
@@ -29,26 +32,48 @@ const NoteRecord = new Record({
 const ReducerState = new Record({
   loading: false,
   loaded: false,
-  entities: arrayToMap(getLocalTodos(), NoteRecord)
+  entities: new OrderedMap(),
+  error: {}
 })
 const defaultState = new ReducerState()
 
 export default (state = defaultState, action) => {
   const { type, payload } = action
   switch (type) {
-    case UPDATE_NOTE:
-      updateLocalTodo(payload)
-
+    case FETCH_NOTES + START:
+      return state
+        .set("loading", true)
+        .set("loaded", false)
+        .set("error", {})
+        .set("entities", new OrderedMap())
+    case FETCH_NOTES + FAIL:
+      return state
+        .set("loading", false)
+        .set("loaded", false)
+        .set("entities", new OrderedMap())
+        .set("error", payload)
+    case FETCH_NOTES + SUCCESS:
+      const notes = renameResponseEntities(payload)
+      return state
+        .set("loading", false)
+        .set("loaded", true)
+        .set("error", {})
+        .set("entities", arrayToMap(notes, NoteRecord))
+    case UPDATE_NOTE + SUCCESS:
       return state
         .setIn(["entities", payload.id, "title"], payload.title)
         .setIn(["entities", payload.id, "description"], payload.description)
-        .setIn(["entities", payload.id, "finished"], payload.finished)
-    case CREATE_NOTE:
-      const noteObject = { ...payload, finished: false }
-      appendToLocalTodos(noteObject)
-      
+        .setIn(["entities", payload.id, "finished"], payload.is_finished)
+    case UPDATE_NOTE + FAIL:
       return state
-        .setIn(["entities", payload.id], new NoteRecord(noteObject))
+        .set("error", payload)
+    case CREATE_NOTE + SUCCESS:
+      const todo = backendTodoToStoreTodo(payload)
+      return state
+        .setIn(["entities", payload.id], new NoteRecord(todo))
+    case CREATE_NOTE + FAIL:
+      return state
+        .set("error", payload)
     default:
       return state
   }

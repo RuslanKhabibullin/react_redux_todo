@@ -1,5 +1,13 @@
 import { Record } from "immutable"
-import { USER_SIGN_OUT, USER_SIGN_IN, USER_SIGN_UP, START, SUCCESS, FAIL } from "../constants"
+import {
+  USER_SIGN_OUT,
+  USER_SIGN_IN,
+  USER_SIGN_UP,
+  START,
+  SUCCESS,
+  FAIL,
+  USER_FETCH_PROFILE
+} from "../constants"
 
 const userId = window.localStorage.getItem("userId")
 const token = window.localStorage.getItem("token")
@@ -43,9 +51,20 @@ export default (state = defaultState, action) => {
     case USER_SIGN_UP + FAIL:
     case USER_SIGN_IN + FAIL:
       return state
-      .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
-      .set("authentication", new AuthRecord({ token: undefined, loaded: false, loading: false }))
-      .set("error", payload)
+        .set("record", new UserRecord({ id: undefined, email: undefined, loaded: false, loading: false }))
+        .set("authentication", new AuthRecord({ token: undefined, loaded: false, loading: false }))
+        .set("error", payload)
+    case USER_FETCH_PROFILE + START:
+      return state
+        .set("record", new UserRecord({ id: userId, email: undefined, loaded: false, loading: true }))
+    case USER_FETCH_PROFILE + SUCCESS:
+      const { id, email } = payload 
+      return state
+        .set("record", new UserRecord({ id: id, email: email, loaded: true, loading: false }))
+    case USER_FETCH_PROFILE + FAIL:
+      return state
+        .set("record", new UserRecord({ id: userId, email: undefined, loaded: false, loading: false }))
+        .set("error", payload)
     case USER_SIGN_OUT:
       window.localStorage.removeItem("userId")
       window.localStorage.removeItem("token")

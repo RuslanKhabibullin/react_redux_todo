@@ -6,8 +6,8 @@ import propTypes from "prop-types"
 import { titleValidations } from "../../validations"
 import Form from "../Form"
 
-const onSubmit = ({ createNote }) => ({ title }, { resetForm }) => {
-  createNote({ title })
+const onSubmit = ({ createNote, token }) => ({ title }, { resetForm }) => {
+  createNote(token, { title })
   resetForm()
 }
 const noteCreationClickHandler = (handleSubmit) => (ev) => ev.key === "Enter" ? handleSubmit(ev) : null
@@ -40,4 +40,8 @@ NewDashboardNoteItem.propTypes = {
   createNote: propTypes.func.isRequired
 }
 
-export default connect(null, { createNote })(NewDashboardNoteItem)
+const mapStateToProps = ({ user }) => {
+  return { token: user.authentication.token }
+}
+
+export default connect(mapStateToProps, { createNote })(NewDashboardNoteItem)

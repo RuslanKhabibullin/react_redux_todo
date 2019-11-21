@@ -21,7 +21,7 @@ function DashboardNoteItem(props) {
 }
 
 DashboardNoteItem.propTypes = {
-  id: propTypes.string.isRequired,
+  id: propTypes.number.isRequired,
   title: propTypes.string.isRequired,
   toggleOpen: propTypes.func.isRequired,
   isActive: propTypes.bool.isRequired

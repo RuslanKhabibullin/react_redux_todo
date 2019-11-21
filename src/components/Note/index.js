@@ -11,8 +11,8 @@ const closeClickHandler = ({ closeNote }) => (ev) => {
   closeNote()
 }
 
-const onSubmit = ({ updateNote, note, closeNote }) => ({ title, description, finished }) => {
-  updateNote({ id: note.id, finished, title, description })
+const onSubmit = ({ updateNote, note, closeNote, token }) => ({ title, description, finished }) => {
+  updateNote(token, { id: note.id, is_finished: finished, title, description })
   closeNote()
 }
 
@@ -53,7 +53,7 @@ function Note(props) {
           </div>
           <div className="note__content">
             <textarea
-              value={values.description}
+              value={values.description || ""}
               onChange={onInputChange}
               className="note__description"
               name="description"
@@ -72,16 +72,18 @@ function Note(props) {
 
 Note.propTypes = {
   note: propTypes.shape({
-    id: propTypes.string,
+    id: propTypes.number,
     title: propTypes.string,
     description: propTypes.string,
     finished: propTypes.bool
   }),
+  token: propTypes.string.isRequired,
   closeNote: propTypes.func.isRequired,
   updateNote: propTypes.func.isRequired,
-  openedNoteId: propTypes.string,
+  openedNoteId: propTypes.number,
 }
 
 export default connect((state, ownProps) => ({
- note: state.notes.entities.get(ownProps.openedNoteId)
+ note: state.notes.entities.get(ownProps.openedNoteId),
+ token: state.user.authentication.get("token")
 }), { updateNote })(Note);
